@@ -1,0 +1,36 @@
+<head>
+    <link id="blank_favicon_base64" rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII="/>
+    <style>
+
+    </style>
+</head>
+<body>
+    <h1>Hello World</h1>
+    <form>
+        <input id="commandInput" type='text' name='command' placeholder="node tests/selfinspection.js">
+        <input type='submit'>
+    </form>
+    <pre id='testbox'></pre>
+    <script>
+        var textDecoder = new TextDecoder('utf8')
+        var testbox = document.getElementById('testbox')
+        var command = location.search ? location.search.split('=')[1].replace(/\+/g,'%20')
+                                      : encodeURIComponent('node tests/selfinspection.js ' + location.port)
+        document.getElementById('commandInput').setAttribute('placeholder', decodeURIComponent(command))
+        fetch(command , { method: 'POST' })
+        .then(response => response.body ? response.body.getReader() // return reader object to next .then block
+                                        : response.text() // return text to consumeText, return undefined to next .then block which exits if reader is falsey
+                                                  .then(text => testbox.textContent = text ))
+        .then(reader => consumeStream(reader))
+
+        function consumeStream(reader){
+            if(!reader) return null
+            return reader.read().then(sample => {
+                if(sample.value){
+                    testbox.textContent += textDecoder.decode(sample.value)
+                    return this.consumeStream(reader)
+                }
+            })
+        }
+    </script>
+</body>
