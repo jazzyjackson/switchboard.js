@@ -43,26 +43,26 @@ say("hello from selfinspection.js! I'll start my tests.\n");
     /* */
 
     say(`switchboard should be able to create a file by posting a body of text...\n`)
-    say(`PUT localhost${port}/newfile.txt -> `)
+    say(`PUT localhost:${port}/newfile.txt -> `)
     await sleep(0.25)
     var putBody = 'hello I am a new file'
     var putResponse = await PUT('/newfile.txt', putBody)
     say(putResponse.status + '\n\n')
 
     say(`and then retrieve that new file...\n`)
-    say(`GET localhost${port}/newfile.txt -> `)
+    say(`GET localhost:${port}/newfile.txt -> `)
     await sleep(0.25)
     var getResponse = await GET('/newfile.txt')
     say(getResponse.status + '\n\n')
     assert.equal(getResponse.data, putBody)
 
     say(`and then delete that new file...\n`)
-    say(`DELETE localhost${port}/newfile.txt -> `)
+    say(`DELETE localhost:${port}/newfile.txt -> `)
     var deleteResult = await DELETE('/newfile.txt')
     say(deleteResult.status + '\n\n')
 
     say(`and getting that file now should fail...\n`)
-    say(`GET localhost${port}/newfile.txt -> `)
+    say(`GET localhost:${port}/newfile.txt -> `)
     await sleep(0.25)
     var getResponse = await GET('/newfile.txt')
     say(getResponse.status + '\n\n')
