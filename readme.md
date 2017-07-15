@@ -1,6 +1,21 @@
-## Usage
-You can add ./switchboard to your path to start the server in any directory
+## GET/PUT/POST/DELETE your files with Switchboard
 
+Switchboard.js provides a minimal network interface to your files and executables with no dependencies, backwards compatible to the original, node 0.10.0
+
+
+## Usage
+``` 
+node switchboard.js
+```
+You can add ./switchboard to your path to start the server in any directory. If no port is provided as a command line argument, a port will be requested from the operating system and your default web browser will be opened to index.html.
+
+```
+node switchboard.js 3000
+```
+
+You can pass a port number to the process, which will suppress the browser opening automatically.
+
+## What's happening?
 
 The server uses streams where appropriate, so files are served quickly and with minimal memory usage.
 The URL is split up into working directory and command
